@@ -7,4 +7,7 @@ public class Bank {
         accounts = new Account[10];
     }
     
+    public void add() {
+
+    }
 }
