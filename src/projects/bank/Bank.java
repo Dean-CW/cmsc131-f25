@@ -1,4 +1,4 @@
-package BankProject;
+package projects.bank;
 
 public class Bank {
     private Account[] accounts;
@@ -16,6 +16,7 @@ public class Bank {
         }
     }
 
+    // This should be made into a unit test
     public static void main(String[] args) {
         Bank bank = new Bank();
         Account account1 = new Account("001", 1000.0, "Savings");
