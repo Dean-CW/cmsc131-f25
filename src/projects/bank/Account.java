@@ -1,4 +1,4 @@
-package BankProject;
+package projects.bank;
 
 public class Account {
     private String id;
