@@ -1,34 +1,67 @@
 package BankProject;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.IOException;
+
 public class Bank {
     private Account[] accounts;
 
     public Bank() {
-        accounts = new Account[10];
+        accounts = new Account[100];
     }
-    
-    public void add(Account account) {
+
+    // methods
+    // add an account to the accounts array
+    public boolean add(Account account) {
+        if (account == null) {
+            throw new IllegalArgumentException("account must not be null.");
+        }
         for (int i = 0; i < accounts.length; i++) {
             if (accounts[i] == null) {
                 accounts[i] = account;
-                break;
+                return true;
             }
         }
+        return false;
     }
 
-    public static void main(String[] args) {
-        Bank bank = new Bank();
-        Account account1 = new Account("001", 1000.0, "Savings");
-        Account account2 = new Account("002", 2000.0, "Checking");
-        
-        bank.add(account1);
-        if(!bank.accounts[0].equals(account1)) {
-            System.out.println("Test failed: account1 was not added correctly.");
+    // find an account in the accounts array by its ID, return its index or -1 if not found
+    public int findAccount (String findId) {
+         if (findId == null) {
+            throw new IllegalArgumentException("accountID must not be null.");
         }
-        bank.add(account2);
-        if(!bank.accounts[1].equals(account2)) {
-            System.out.println("Test failed: account2 was not added correctly.");
+        for (int i = 0; i < accounts.length; i++) {
+            if (accounts[i] != null && accounts[i].getID().equals(findId)) {
+                return i;
+            }
         }
-        System.out.println("Accounts added to the bank.");
+        return -1;
     }
+
+    public int getNumberOfAccounts() {
+        int count = 0;
+        for (Account account : accounts) {
+            if (account != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void loadAccounts(String filename) {
+        if (filename == null) {
+            throw new IllegalArgumentException("filename must not be null.");
+        }
+        
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filename), StandardCharsets.UTF_8)) {
+            String line;
+            
+
+    public void saveAccounts(String filename) {
+        // not implemented
+    }
+
 }
