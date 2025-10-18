@@ -1,4 +1,4 @@
-package BankProject;
+package projects.bank;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -1,4 +1,4 @@
-package BankProject;
+package projects.bank;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -55,10 +55,12 @@ public class Bank {
         if (filename == null) {
             throw new IllegalArgumentException("filename must not be null.");
         }
-        
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filename), StandardCharsets.UTF_8)) {
+
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get(filename), StandardCharsets.UTF_8)
             String line;
-            
+        }        
+    }
 
     public void saveAccounts(String filename) {
         // not implemented

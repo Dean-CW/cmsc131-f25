@@ -1,4 +1,4 @@
-package BankProject;
+package projects.bank;
 
 public enum AccountType {
     CHECKING,
