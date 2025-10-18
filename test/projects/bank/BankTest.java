@@ -1,4 +1,4 @@
-package BankProject;
+package projects.bank;
 
 import static org.junit.jupiter.api.Assertions.*;
 
