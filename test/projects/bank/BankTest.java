@@ -104,4 +104,12 @@ public class BankTest {
         );
     }
 
+    // TODO tests for:
+    // loadAccounts failure mode
+    // loadAccounts preserves data
+    // loadAccounts returns true on succeed
+    // writeAccounts failure mode
+    // writeAccounts preserves data
+    // writeAccounts returns true on succeed
+
 }

@@ -25,4 +25,8 @@ public class AccountTest {
         );
         assertEquals("type cannot be null", e.getMessage());
     }
+
+    // TODO static factory throws on null input
+    // TODO static factory preserves data
+    // TODO toCSV output is correct
 }
