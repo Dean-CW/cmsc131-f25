@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+//import BankProject.SavingsAccount;
+
 public class Main {
     public static void main(String[] args) {
         phase1();
@@ -14,12 +16,11 @@ public class Main {
         String logName = "phase1.log";
         try {
             FileWriter writer = new FileWriter(new File(logName));
-
-            Account acct = new Account(
+            // use SavingsAccount from the same package (no import needed)
+            Account acct = new SavingsAccount(
                 "id1",
                 "Owner Name",
-                1.0,
-                AccountType.SAVINGS
+                1.0
             );
             
             writer.write(
@@ -67,9 +68,23 @@ public class Main {
         boolean result = bank.loadAccounts(accountsFilename);
 
         System.out.println("Result of loading account: " + result);
-        System.out.println("Number of accounts: " + bank.getCount());
+        System.out.println("Number of accounts: " + bank.getNumberOfAccounts());
 
         String outputFilename = "data/phase2.csv";
         bank.writeAccounts(outputFilename);
+    }
+
+    public static void phase3() {
+        Bank bank = new Bank();
+        bank.loadAccounts("data/accounts.csv"); // ignore output
+        boolean step2;
+        if(bank.processTransactions("data/transactions.csv") != 0) {
+            step2 = true;
+        } else {
+            step2 = false;
+        }
+        boolean step3 = bank.writeAccounts("data/accounts.csv");
+        System.out.println("Transactions process: " + step2);
+        System.out.println("Accounts write: " + step3);
     }
 }
