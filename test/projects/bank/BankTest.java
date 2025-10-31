@@ -10,10 +10,14 @@ public class BankTest {
     private Bank bank;
     private Account acct;
 
-    @BeforeEach
+     @BeforeEach
     void setup() {
         bank = new Bank();
-        acct = new Account("id0", "Owner Name", 1.0, AccountType.SAVINGS);
+        acct = new CheckingAccount(
+            "id0",
+            "Owner Name",
+            1.0
+        );
     }
 
     // tests for add method
@@ -61,11 +65,10 @@ public class BankTest {
         for (int idx = 0; idx <= 100; idx++) {
             Integer id = idx;
             bank.add(
-                new Account(
+                new SavingsAccount(
                     id.toString(),
                     "Owner Name",
-                    1.0,
-                    AccountType.CHECKING
+                    1.0
                 )
             );
         }
@@ -104,12 +107,118 @@ public class BankTest {
         );
     }
 
-    // TODO tests for:
-    // loadAccounts failure mode
-    // loadAccounts preserves data
-    // loadAccounts returns true on succeed
-    // writeAccounts failure mode
-    // writeAccounts preserves data
-    // writeAccounts returns true on succeed
+    // CSV I/O tests for phase 2
+
+    @Test
+    void testLoadAccountsFail() {
+        assertEquals(false, bank.loadAccounts("not/a/real.file"));
+    }
+
+    @Test
+    void testLoadAccounts() {
+        String accountsFilename = "data/testaccounts.csv";
+        boolean result = bank.loadAccounts(accountsFilename);
+        assertEquals(
+            true,
+            result
+        );
+        Account[] accounts = bank.getAccounts();
+        assertEquals(
+            2,
+            bank.getNumberOfAccounts()
+        );
+
+        // check validity of stored rental item
+        Account account = accounts[0];
+        assertEquals(
+            "wz240833",
+            account.getID()
+        );
+        assertEquals(
+            "Anna Gomez",
+            account.getOwnerName()
+        );
+        assertEquals(
+            AccountType.SAVINGS,
+            account.getType()
+        );
+        assertEquals(
+            8111.00,
+            account.getBalance(),
+            1e-2
+        );
+
+        account = accounts[1];
+        assertEquals(
+            "hr108256",
+            account.getID()
+        );
+        assertEquals(
+            "Anna Gomez",
+            account.getOwnerName()
+        );
+        assertEquals(
+            AccountType.CHECKING,
+            account.getType()
+        );
+        assertEquals(
+            1715.18,
+            account.getBalance(),
+            1e-2
+        );
+    } // end: testLoadAccounts
+
+    @Test
+    void testWriteAccountsFail() {
+        assertEquals(false, bank.writeAccounts("not/a/real.file"));
+    }
+
+    @Test
+    void testWriteAccounts() {
+        // loading rental items already tested
+        String accountsFilename = "data/testaccounts.csv";
+        boolean result = bank.loadAccounts(accountsFilename);
+        assertEquals(true, result);
+        
+        // write
+        accountsFilename = "data/testaccounts-out.csv";
+        bank.writeAccounts(accountsFilename);
+
+        // reload and compare
+        Bank bankReload = new Bank();
+        bankReload.loadAccounts(accountsFilename);
+
+        assertEquals(bank.getNumberOfAccounts(), bankReload.getNumberOfAccounts());
+
+        Account[] bankAccounts = bank.getNumberOfAccounts();
+        Account[] bankReloadAccounts = bank.getAccounts();
+        assertEquals(bankAccounts.length, bankReloadAccounts.length);
+        for (int idx = 0; idx < bank.getNumberOfAccounts(); idx++) {
+            assertEquals(
+                bankAccounts[idx],
+                bankReloadAccounts[idx],
+                String.format("Rental item %s should match.", idx)
+            );
+        }
+    }
+
+    // phase 3
+
+    @Test
+    void testProcessTransactionsFailure() {
+        assertEquals(
+            0,
+            bank.processTransactions("not/a/real.csv") // or null
+        );
+    }
+
+    @Test
+    void testProcesTransactionsSuccess() {
+        // testtransactions.csv has 4 lines
+        assertEquals(
+            4,
+            bank.processTransactions("data/testtransactions.csv")
+        );
+    }
 
 }
